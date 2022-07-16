@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        'cstrike' => [
+            'driver' => 'local',
+            'root' => storage_path('app/cstrike'),
+            'url' => env('APP_URL').'/storage/cstrike',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*
