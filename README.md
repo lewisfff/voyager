@@ -11,4 +11,5 @@ configure the game server to use the fastdl server.
 cstrike/cfg/server.cfg
 
 sv_downloadurl "http://ip.address/fastdl/"
+
 sv_allowdownload 1
