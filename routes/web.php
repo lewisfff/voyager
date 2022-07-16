@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Process\Process;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,10 +78,13 @@ Route::post('/file.upload', function () {
     // upload the bsp file to cstrike/maps folder
     $file = request('file')->storeAs('maps', request('file')->getClientOriginalName(), 'cstrike');
 
-    // create a bzip2 archive of the map file
-//    $archive = new \PharData(storage_path('app/cstrike/maps/' . basename($file)));
-//    $archive->compress(\Phar::GZ);
-    
+    // run the shell command  bzip2 -k $map, return when it's done
+    $process = new Process(['bzip2', '-k', storage_path('app/cstrike/maps/' . basename($file))]);
+    $process->run();
+
+    // move the file in storage/app/cstrike/maps/$map.bz2 to public/fastdl/cstrike/maps/$map.bz2
+    $process = new Process(['mv', storage_path('app/cstrike/maps/' . basename($file) . '.bz2'), public_path('fastdl/cstrike/maps/' . basename($file)) . '.bz2']);
+    $process->run();
 
     // if the file was uploaded successfully, upload the config file to cstrike/cfg/sourcemod/map-cfg folder
     if ($file) {
